@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Put } from '
 import { ApiAcceptedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UUIDParam } from '../../decorators';
 import { CreateShoeDto } from './dto/createShoe.dto';
-import { ShoesDto } from './dto/shoes.dto';
+import { ShoeDto, ShoesDto } from './dto/shoes.dto';
 import { UpdateShoeDto } from './dto/updateShoe.dto';
 import { ShoeEntity } from './shoes.entity';
 import { ShoesService } from './shoes.service';
@@ -31,6 +31,16 @@ export class ShoesController {
   })
   async getAllShoes():Promise<ShoesDto>{
     return await this.shoesService.getAllShoes();
+  }
+
+  @Get('/all-user-shoes/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    type: ShoesDto,
+    description: 'List of profiles successfully fetched'
+  })
+  async getAllUserShoes(@UUIDParam('id') id: Uuid):Promise<ShoeDto[]>{
+    return await this.shoesService.getAllUserShoes(id);
   }
 
   @Delete('/delete-shoe/:id')
